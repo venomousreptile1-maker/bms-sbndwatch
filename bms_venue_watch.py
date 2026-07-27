@@ -77,11 +77,23 @@ CALLMEBOT_APIKEY = os.getenv("CALLMEBOT_APIKEY", "").strip()
 
 HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-                   "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-IN,en;q=0.9",
+                   "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"),
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,"
+              "image/webp,*/*;q=0.8",
+    "Accept-Language": "en-IN,en-GB;q=0.9,en;q=0.8",
+    "Accept-Encoding": "gzip, deflate, br",
+    "sec-ch-ua": '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-origin",
+    "Sec-Fetch-User": "?1",
+    "Upgrade-Insecure-Requests": "1",
     "Referer": f"https://in.bookmyshow.com/movies/{CITY_SLUG}/{MOVIE_SLUG}/{EVENT_CODE}",
 }
+
+MOVIE_PAGE = f"https://in.bookmyshow.com/movies/{CITY_SLUG}/{MOVIE_SLUG}/{EVENT_CODE}"
 
 VENUE_NAME_RE = re.compile(r"(venue|theatre|theater|cinema).{0,3}name", re.I)
 VENUE_CODE_RE = re.compile(r"(venue|theatre|theater|cinema).{0,3}code", re.I)
@@ -115,12 +127,37 @@ def dates_to_watch():
 
 # ---------------------------------------------------------------- fetch
 
-def fetch(url):
+_SESSION = None
+
+
+def _new_session():
+    """Fresh session, warmed up on the movie page so Akamai cookies are set."""
     if HAVE_CFFI:
-        r = cffi_requests.get(url, headers=HEADERS, impersonate="chrome124",
-                              timeout=25, allow_redirects=True)
+        sess = cffi_requests.Session(impersonate="chrome124")
     else:
-        r = requests.get(url, headers=HEADERS, timeout=25, allow_redirects=True)
+        sess = requests.Session()
+    try:
+        h = dict(HEADERS)
+        h["Sec-Fetch-Site"] = "none"
+        h.pop("Referer", None)
+        r = sess.get(MOVIE_PAGE, headers=h, timeout=25)
+        log(f"warm-up: HTTP {r.status_code}, {len(sess.cookies)} cookies")
+        time.sleep(2)
+    except Exception as e:
+        log(f"warm-up failed: {e}")
+    return sess
+
+
+def fetch(url, _retry=True):
+    global _SESSION
+    if _SESSION is None:
+        _SESSION = _new_session()
+    r = _SESSION.get(url, headers=HEADERS, timeout=25, allow_redirects=True)
+    if r.status_code == 403 and _retry:
+        log("403 - rebuilding session and retrying once")
+        time.sleep(5)
+        _SESSION = _new_session()
+        return fetch(url, _retry=False)
     return r.status_code, (r.text or "")
 
 
@@ -435,7 +472,15 @@ def main():
 
     state = load_state()
     log(f"Watching {MOVIE_NAME} | {CITY_SLUG} | dates {dates_to_watch()}")
-    log(f"Filter: {WATCH_VENUES or 'ALL venues'}")
+    if WATCH_CODES or WATCH_VENUES:
+        bits = []
+        if WATCH_CODES:
+            bits.append("codes=" + ",".join(c.upper() for c in WATCH_CODES))
+        if WATCH_VENUES:
+            bits.append("names~" + ",".join(WATCH_VENUES))
+        log("Filter: " + " | ".join(bits))
+    else:
+        log("Filter: ALL venues (no WATCH_CODES / WATCH_VENUES set)")
 
     if args.once:
         run_cycle(state)
