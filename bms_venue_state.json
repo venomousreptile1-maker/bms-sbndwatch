@@ -1,0 +1,258 @@
+{
+  "schema": 2,
+  "snapshot": {
+    "20260730": {
+      "RAKK": {
+        "name": "Rakki Cinemas: OMR, Kelambakkam",
+        "code": "RAKK",
+        "shows": 6,
+        "approx": true
+      },
+      "TVHP": {
+        "name": "The Vijay Park Multiplex: Injambakkam ECR 4K Atmos",
+        "code": "TVHP",
+        "shows": 6,
+        "approx": true
+      },
+      "CBMC": {
+        "name": "Cinepolis: BSR Mall, OMR, Thoraipakkam",
+        "code": "CBMC",
+        "shows": 6,
+        "approx": true
+      },
+      "MAYJ": {
+        "name": "MAYAJAAL Multiplex: ECR, Chennai",
+        "code": "MAYJ",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHR": {
+        "name": "PVR: Heritage RSL ECR, Chennai",
+        "code": "PVHR",
+        "shows": 6,
+        "approx": true
+      },
+      "LKOP": {
+        "name": "Lathaa Cinemas A/C Atmos 2K 3D: Chengalpattu",
+        "code": "LKOP",
+        "shows": 6,
+        "approx": true
+      },
+      "PGRA": {
+        "name": "PVR: Grand Galada, Pallavaram",
+        "code": "PGRA",
+        "shows": 6,
+        "approx": true
+      },
+      "PGMV": {
+        "name": "PVR: Grand Mall, Velachery",
+        "code": "PGMV",
+        "shows": 6,
+        "approx": true
+      },
+      "PABC": {
+        "name": "PVR: Aerohub, Chennai",
+        "code": "PABC",
+        "shows": 6,
+        "approx": true
+      },
+      "PBRM": {
+        "name": "PVR: Perambur, Spectrum Mall",
+        "code": "PBRM",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHC": {
+        "name": "PVR: Ampa Mall, Nelson Manickam Road",
+        "code": "PVHC",
+        "shows": 6,
+        "approx": true
+      },
+      "MMPR": {
+        "name": "MovieMax: PR Mall, Wall Tax Road, Chennai",
+        "code": "MMPR",
+        "shows": 6,
+        "approx": true
+      },
+      "VVGT": {
+        "name": "Vels Theatres: Chennai",
+        "code": "VVGT",
+        "shows": 6,
+        "approx": true
+      },
+      "INCH": {
+        "name": "INOX: Chennai Citi Centre, Dr. RK Salai",
+        "code": "INCH",
+        "shows": 6,
+        "approx": true
+      }
+    },
+    "20260731": {
+      "RAKK": {
+        "name": "Rakki Cinemas: OMR, Kelambakkam",
+        "code": "RAKK",
+        "shows": 6,
+        "approx": true
+      },
+      "TVHP": {
+        "name": "The Vijay Park Multiplex: Injambakkam ECR 4K Atmos",
+        "code": "TVHP",
+        "shows": 6,
+        "approx": true
+      },
+      "CBMC": {
+        "name": "Cinepolis: BSR Mall, OMR, Thoraipakkam",
+        "code": "CBMC",
+        "shows": 6,
+        "approx": true
+      },
+      "MAYJ": {
+        "name": "MAYAJAAL Multiplex: ECR, Chennai",
+        "code": "MAYJ",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHR": {
+        "name": "PVR: Heritage RSL ECR, Chennai",
+        "code": "PVHR",
+        "shows": 6,
+        "approx": true
+      },
+      "LKOP": {
+        "name": "Lathaa Cinemas A/C Atmos 2K 3D: Chengalpattu",
+        "code": "LKOP",
+        "shows": 6,
+        "approx": true
+      },
+      "PGRA": {
+        "name": "PVR: Grand Galada, Pallavaram",
+        "code": "PGRA",
+        "shows": 6,
+        "approx": true
+      },
+      "PGMV": {
+        "name": "PVR: Grand Mall, Velachery",
+        "code": "PGMV",
+        "shows": 6,
+        "approx": true
+      },
+      "PABC": {
+        "name": "PVR: Aerohub, Chennai",
+        "code": "PABC",
+        "shows": 6,
+        "approx": true
+      },
+      "PBRM": {
+        "name": "PVR: Perambur, Spectrum Mall",
+        "code": "PBRM",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHC": {
+        "name": "PVR: Ampa Mall, Nelson Manickam Road",
+        "code": "PVHC",
+        "shows": 6,
+        "approx": true
+      },
+      "MMPR": {
+        "name": "MovieMax: PR Mall, Wall Tax Road, Chennai",
+        "code": "MMPR",
+        "shows": 6,
+        "approx": true
+      },
+      "VVGT": {
+        "name": "Vels Theatres: Chennai",
+        "code": "VVGT",
+        "shows": 6,
+        "approx": true
+      },
+      "INCH": {
+        "name": "INOX: Chennai Citi Centre, Dr. RK Salai",
+        "code": "INCH",
+        "shows": 6,
+        "approx": true
+      }
+    },
+    "20260801": {
+      "RAKK": {
+        "name": "Rakki Cinemas: OMR, Kelambakkam",
+        "code": "RAKK",
+        "shows": 6,
+        "approx": true
+      },
+      "TVHP": {
+        "name": "The Vijay Park Multiplex: Injambakkam ECR 4K Atmos",
+        "code": "TVHP",
+        "shows": 6,
+        "approx": true
+      },
+      "CBMC": {
+        "name": "Cinepolis: BSR Mall, OMR, Thoraipakkam",
+        "code": "CBMC",
+        "shows": 6,
+        "approx": true
+      },
+      "MAYJ": {
+        "name": "MAYAJAAL Multiplex: ECR, Chennai",
+        "code": "MAYJ",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHR": {
+        "name": "PVR: Heritage RSL ECR, Chennai",
+        "code": "PVHR",
+        "shows": 6,
+        "approx": true
+      },
+      "LKOP": {
+        "name": "Lathaa Cinemas A/C Atmos 2K 3D: Chengalpattu",
+        "code": "LKOP",
+        "shows": 6,
+        "approx": true
+      },
+      "PGRA": {
+        "name": "PVR: Grand Galada, Pallavaram",
+        "code": "PGRA",
+        "shows": 6,
+        "approx": true
+      },
+      "PGMV": {
+        "name": "PVR: Grand Mall, Velachery",
+        "code": "PGMV",
+        "shows": 6,
+        "approx": true
+      },
+      "PABC": {
+        "name": "PVR: Aerohub, Chennai",
+        "code": "PABC",
+        "shows": 6,
+        "approx": true
+      },
+      "PBRM": {
+        "name": "PVR: Perambur, Spectrum Mall",
+        "code": "PBRM",
+        "shows": 6,
+        "approx": true
+      },
+      "PVHC": {
+        "name": "PVR: Ampa Mall, Nelson Manickam Road",
+        "code": "PVHC",
+        "shows": 6,
+        "approx": true
+      },
+      "MMPR": {
+        "name": "MovieMax: PR Mall, Wall Tax Road, Chennai",
+        "code": "MMPR",
+        "shows": 6,
+        "approx": true
+      },
+      "INCH": {
+        "name": "INOX: Chennai Citi Centre, Dr. RK Salai",
+        "code": "INCH",
+        "shows": 6,
+        "approx": true
+      }
+    }
+  },
+  "cycles": 1
+}
