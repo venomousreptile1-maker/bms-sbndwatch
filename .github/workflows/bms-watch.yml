@@ -1,22 +1,32 @@
 # .github/workflows/bms-watch.yml
 #
-# Polls BookMyShow on a schedule and pushes an alert when new theatres open.
-# State is committed back to the repo, which also keeps the workflow from
-# being auto-disabled after 60 days of repo inactivity.
+# Config is inline below - none of it is sensitive. The only thing that goes
+# in Settings > Secrets and variables > Actions > Secrets is NTFY_TOPIC.
 
 name: bms-watch
 
 on:
   schedule:
     - cron: '*/5 * * * *'      # every 5 minutes (GitHub's minimum)
-  workflow_dispatch:            # lets you trigger a run manually from the UI
+  workflow_dispatch:            # manual trigger button in the Actions tab
 
 permissions:
   contents: write               # needed to commit the state file back
 
 concurrency:
   group: bms-watch
-  cancel-in-progress: false     # never run two cycles at once
+  cancel-in-progress: false     # queue runs, never overlap
+
+env:
+  MOVIE_NAME:          "Spider-Man: Brand New Day"
+  MOVIE_SLUG:          spider-man-brand-new-day
+  EVENT_CODE:          ET00502600
+  CITY_SLUG:           chennai
+  CITY_CODE:           chen
+  TARGET_DATES:        "20260730,20260731,20260801"
+  WATCH_CODES:         "PCAN,AGSM,PVPZ"
+  WATCH_VENUES:        ""
+  ALERT_ON_MORE_SHOWS: "false"
 
 jobs:
   watch:
@@ -36,21 +46,7 @@ jobs:
 
       - name: Check BookMyShow
         env:
-          MOVIE_NAME:   ${{ vars.MOVIE_NAME }}
-          MOVIE_SLUG:   ${{ vars.MOVIE_SLUG }}
-          EVENT_CODE:   ${{ vars.EVENT_CODE }}
-          CITY_SLUG:    ${{ vars.CITY_SLUG }}
-          CITY_CODE:    ${{ vars.CITY_CODE }}
-          LANGUAGE:     ${{ vars.LANGUAGE }}
-          TARGET_DATES: ${{ vars.TARGET_DATES }}
-          DAYS_AHEAD:   ${{ vars.DAYS_AHEAD }}
-          WATCH_CODES:  ${{ vars.WATCH_CODES }}
-          WATCH_VENUES: ${{ vars.WATCH_VENUES }}
-          # secrets, not vars - these stay masked in the logs
-          NTFY_TOPIC:        ${{ secrets.NTFY_TOPIC }}
-          NTFY_TOKEN:        ${{ secrets.NTFY_TOKEN }}
-          CALLMEBOT_PHONE:   ${{ secrets.CALLMEBOT_PHONE }}
-          CALLMEBOT_APIKEY:  ${{ secrets.CALLMEBOT_APIKEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
         run: python bms_venue_watch.py --once
 
       - name: Persist state
@@ -62,7 +58,6 @@ jobs:
           git add -f bms_venue_state.json
           git diff --staged --quiet && exit 0
           git commit -m "state: $(date -u +%FT%TZ)"
-          # another run may have pushed while we were fetching
           for i in 1 2 3; do
             git pull --rebase --autostash && git push && exit 0
             sleep 5
