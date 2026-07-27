@@ -1,0 +1,71 @@
+# .github/workflows/bms-watch.yml
+#
+# Polls BookMyShow on a schedule and pushes an alert when new theatres open.
+# State is committed back to the repo, which also keeps the workflow from
+# being auto-disabled after 60 days of repo inactivity.
+
+name: bms-watch
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'      # every 5 minutes (GitHub's minimum)
+  workflow_dispatch:            # lets you trigger a run manually from the UI
+
+permissions:
+  contents: write               # needed to commit the state file back
+
+concurrency:
+  group: bms-watch
+  cancel-in-progress: false     # never run two cycles at once
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install deps
+        run: pip install curl_cffi requests python-dotenv
+
+      - name: Check BookMyShow
+        env:
+          MOVIE_NAME:   ${{ vars.MOVIE_NAME }}
+          MOVIE_SLUG:   ${{ vars.MOVIE_SLUG }}
+          EVENT_CODE:   ${{ vars.EVENT_CODE }}
+          CITY_SLUG:    ${{ vars.CITY_SLUG }}
+          CITY_CODE:    ${{ vars.CITY_CODE }}
+          LANGUAGE:     ${{ vars.LANGUAGE }}
+          TARGET_DATES: ${{ vars.TARGET_DATES }}
+          DAYS_AHEAD:   ${{ vars.DAYS_AHEAD }}
+          WATCH_CODES:  ${{ vars.WATCH_CODES }}
+          WATCH_VENUES: ${{ vars.WATCH_VENUES }}
+          # secrets, not vars - these stay masked in the logs
+          NTFY_TOPIC:        ${{ secrets.NTFY_TOPIC }}
+          NTFY_TOKEN:        ${{ secrets.NTFY_TOKEN }}
+          CALLMEBOT_PHONE:   ${{ secrets.CALLMEBOT_PHONE }}
+          CALLMEBOT_APIKEY:  ${{ secrets.CALLMEBOT_APIKEY }}
+        run: python bms_venue_watch.py --once
+
+      - name: Persist state
+        if: always()
+        run: |
+          test -f bms_venue_state.json || exit 0
+          git config user.name  "bms-watch"
+          git config user.email "actions@github.com"
+          git add -f bms_venue_state.json
+          git diff --staged --quiet && exit 0
+          git commit -m "state: $(date -u +%FT%TZ)"
+          # another run may have pushed while we were fetching
+          for i in 1 2 3; do
+            git pull --rebase --autostash && git push && exit 0
+            sleep 5
+          done
+          echo "could not push state after 3 attempts"
+          exit 1
